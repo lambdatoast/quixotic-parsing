@@ -1,0 +1,33 @@
+{
+    "name": "lambdatoast/quixotic-parsing",
+    "description": "Functional parser combinators",
+    "version": "0.1.0",
+    "keywords": ["functional programming", "parsing", "parser combinator"],
+    "homepage": "http://github.com/lambdatoast/quixotic-parsing",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Noriega",
+            "email": "lambdatoast@gmail.com",
+            "homepage": "http://lambdatoast.com"
+        }
+    ],
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lambdatoast/quixotic"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "lambdatoast/quixotic": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    }
+}
+
