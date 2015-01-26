@@ -1,6 +1,6 @@
 <?php
 
-abstract class Parsing implements Alternative, Functor {
+abstract class Parsing implements Alternative, Chain, Functor {
   /**
    * Combinators.
    */

@@ -1,10 +1,16 @@
 <?php
 
 abstract class Result implements Chain, Equal {
+
   abstract public function lazy_or_(callable $fb);
-  abstract public function set_chars_consumed($n);
+  abstract public function setCharsConsumed($n);
   abstract protected function isGood();
   abstract protected function isBad();
+
+  /**
+   * @return Maybe Either `Some($chars_consumed)` or `None`.
+   */
+  abstract public function getCharsConsumed();
 
 }
 
