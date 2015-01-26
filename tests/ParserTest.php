@@ -12,7 +12,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
           Parser::str('ab'),
           Parser::str('cd')
         )->run('abcd')
-         ->equal(new Good(array('ab', 'cd'), 2))
+         ->equal(new Good(array('ab', 'cd'), 4))
       );
     }
 }
