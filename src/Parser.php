@@ -1,6 +1,9 @@
 <?php
 
-class Parser extends Parsing {
+class Parser implements Parsing {
+
+  use ParsingPrimitives;
+
   private $_run;
 
   function __construct(callable $f) {
