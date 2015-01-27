@@ -62,13 +62,19 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals(
         new Good('a', 1),
         Parser::anyChar()->run('abc'),
-        'Parser::anyChar() when successfully run with a char s must produce (s minus first char).'
+        'Parser::anyChar() when successfully run on a char s must produce (s minus first char).'
       );
 
       $this->assertEquals(
         Parser::anyChar()->run(''),
         new Bad((new Location('', 0))->toError("Did not satisfy predicate with input ''")),
         'Parser::anyChar() fails when run on an empty string.'
+      );
+
+      $this->assertEquals(
+        new Good('3', 1),
+        Parser::anyDigit()->run('3'),
+        'Parser::anyDigit() when successfully run on a digit d must produce d.'
       );
 
     }
@@ -79,6 +85,14 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         Parser::anyChar()->chain(function ($c) {
           return Parser::times(2, Parser::char(strtoupper($c)));
         })->run('aAA'),
+        'Parser::chain() must pass context and update character consumption status appropriately.'
+      );
+
+      $this->assertEquals(
+        new Good(array('A', 'A', 'A'), 5),
+        Parser::product(Parser::anyDigit(), Parser::anyChar())->chain(function ($x) {
+          return Parser::times(intval($x[0]), Parser::char(strtoupper($x[1])));
+        })->run('3aAAA'),
         'Parser::chain() must pass context and update character consumption status appropriately.'
       );
     }

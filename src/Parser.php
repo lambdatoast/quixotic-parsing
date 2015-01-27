@@ -28,6 +28,12 @@ class Parser implements Parsing, TextParsing {
     return self::satisfyChar(function ($c) { return $c !== ''; });
   }
 
+  static function anyDigit() {
+    return self::satisfyChar(function ($c) { 
+      return is_numeric($c);
+    });
+  }
+
   static function str($s) {
     return new Parser(function (Location $l) use ($s) {
       return self::starts_with($l->input(), $s) ? new Good($s, strlen($s))

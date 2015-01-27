@@ -14,6 +14,11 @@ interface TextParsing {
   static function anyChar();
 
   /**
+   * @return Parsing
+   */
+  static function anyDigit();
+
+  /**
    * @param string $s
    * @return Parsing
    */
