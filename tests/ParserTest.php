@@ -153,7 +153,31 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         Parser::many(Parser::char('a'))->run('bbb'),
         'Parser::many() produces empty array when no matches'
       );
+
+      $spaces = Parser::many(Parser::char(' '));
+      $fst = function (array $x) { return $x[0]; };
+      $this->assertEquals(
+        new Good(array('a', 'b'), 5),
+        Parser::product(
+          Parser::product(Parser::char('a'), $spaces)->map($fst),
+          Parser::char('b')
+        )->run('a   b'),
+        ''
+      );
+    }
+
+    public function testMany1() {
+      $this->assertEquals(
+        new Good(array('a', 'a', 'a'), 3),
+        Parser::many1(Parser::char('a'))->run('aaa'),
+        'Parser::many1() when successful produces an array for every match'
+      );
+
+      $this->assertEquals(
+        new Bad((new Location('baaa', 0))->toError("Expected the string 'a'")),
+        Parser::many1(Parser::char('a'))->run('baaa'),
+        'Parser::many1() fails when not even one success'
+      );
     }
 
 }
-
