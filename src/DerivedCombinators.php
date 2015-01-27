@@ -8,7 +8,7 @@
  * Parsing functions.
  *
  */
-trait ParsingPrimitives {
+trait DerivedCombinators {
 
   // Functor instance
 
@@ -48,6 +48,5 @@ trait ParsingPrimitives {
       });
     });
   }
-
 
 }

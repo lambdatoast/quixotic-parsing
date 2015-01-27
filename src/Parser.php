@@ -2,7 +2,7 @@
 
 class Parser implements Parsing, TextParsing {
 
-  use ParsingPrimitives;
+  use DerivedCombinators;
 
   private $_run;
 
@@ -85,6 +85,13 @@ class Parser implements Parsing, TextParsing {
       function () use ($p) { return self::many($p); }
     )->map(function ($xs) { return array_merge(array($xs[0]), $xs[1]); })
      ->or_(self::succeed(array()));
+  }
+
+  static function many1(Parsing $p) {
+    return self::lazy_product(
+      $p, 
+      function () use ($p) { return self::many($p); }
+    )->map(function ($xs) { return array_merge(array($xs[0]), $xs[1]); });
   }
 
   // Chain implementation
