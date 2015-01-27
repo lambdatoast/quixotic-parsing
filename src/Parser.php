@@ -24,6 +24,10 @@ class Parser implements Parsing, TextParsing {
     return Parser::str($c)->map(function ($s) { return substr($s, 0, 1); });
   }
 
+  static function anyChar() {
+    return self::satisfy(function ($s) { return substr($s, 0, 1) !== false; });
+  }
+
   static function str($s) {
     return new Parser(function (Location $l) use ($s) {
       return self::starts_with($l->input(), $s) ? new Good($s, strlen($s))

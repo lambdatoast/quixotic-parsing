@@ -52,6 +52,18 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         new Good('ab', 2),
         'Parser::satisfy(f) when successful must produce the input.'
       );
+
+      $this->assertEquals(
+        Parser::anyChar()->run('a'),
+        new Good('a', 1),
+        'Parser::anyChar() when successfully run with a char c must produce c.'
+      );
+
+      $this->assertEquals(
+        Parser::anyChar()->run(''),
+        new Bad((new Location('', 0))->toError("Did not satisfy predicate with input ''")),
+        'Parser::anyChar() fails when run on an empty string.'
+      );
     }
 
 }

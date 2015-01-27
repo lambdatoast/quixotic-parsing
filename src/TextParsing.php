@@ -9,6 +9,11 @@ interface TextParsing {
   static function char($c);
 
   /**
+   * @return Parsing
+   */
+  static function anyChar();
+
+  /**
    * @param string $s
    * @return Parsing
    */
