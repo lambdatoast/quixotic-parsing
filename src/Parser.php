@@ -31,14 +31,6 @@ class Parser implements Parsing {
     });
   }
 
-  static function product(Parser $p1, Parser $p2) {
-    return $p1->chain(function ($a) use ($p2) {
-      return $p2->map(function ($b) use ($a) {
-        return array($a, $b);
-      });
-    });
-  }
-
   function run($input) {
     $func = $this->_run;
     return $func(new Location($input));
@@ -52,17 +44,8 @@ class Parser implements Parsing {
     });
   }
 
-  static function map2(Parser $a, Parser $b, callable $f) {
-    return $a->chain(function ($x) use ($f, $b) {
-      return $b->map(function ($y) use ($f, $x) {
-        return $f($x, $y);
-      });
-    });
-  }
-
   // Chain implementation
 
-  // A -> Parser[B]
   function chain(callable $f) { 
     return new Parser(function (Location $l) use ($f) {
       return $this->run($l->input())->chain(function ($a, $chars_consumed) use ($f, $l) {
