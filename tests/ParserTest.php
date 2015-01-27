@@ -108,6 +108,20 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         )->run('abcd'),
         'Parser::slice() when successful produces the inspected input string.'
       );
+
+      $this->assertEquals(
+        new Good(array('ab', 'cdef'), 6),
+        Parser::product(
+          Parser::str('ab'),
+          Parser::slice(
+            Parser::product(
+              Parser::str('cd'),
+              Parser::str('ef')
+            )
+          )
+        )->run('abcdef'),
+        'Parser::slice() when successful produces the inspected input string.'
+      );
     }
 
 }
