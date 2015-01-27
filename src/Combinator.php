@@ -50,6 +50,14 @@ interface Combinator extends Alternative, Chain, Functor {
   static function many1(Combinator $p);
 
   /**
+   * Run the two parsers and ignore the value of the left one.
+   * @param Combinator $p
+   * @param Combinator $p
+   * @return Combinator
+   */
+  static function skipL(Combinator $p1, Combinator $p2);
+
+  /**
    * @param String $input
    * @return Result
    */

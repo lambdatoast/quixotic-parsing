@@ -49,4 +49,8 @@ trait DerivedCombinators {
     });
   }
 
+  static function skipL(Combinator $p1, Combinator $p2) {
+    return self::map2($p1, $p2, function ($_, $b) { return $b; });
+  }
+
 }

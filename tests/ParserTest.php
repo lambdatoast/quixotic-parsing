@@ -180,4 +180,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       );
     }
 
+    public function testSkipping() {
+      $this->assertEquals(
+        new Good('b', 2),
+        Parser::skipL(Parser::char('a'), Parser::char('b'))->run('ab'),
+        'Parser::skipL(p1,p2) discards result of p1'
+      );
+    }
+
 }
