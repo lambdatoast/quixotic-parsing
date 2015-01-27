@@ -1,7 +1,7 @@
 {
     "name": "lambdatoast/quixotic-parsing",
     "description": "Functional parser combinators",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "keywords": ["functional programming", "parsing", "parser combinator"],
     "homepage": "http://github.com/lambdatoast/quixotic-parsing",
     "type": "library",
