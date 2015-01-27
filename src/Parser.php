@@ -31,6 +31,14 @@ class Parser implements Parsing, TextParsing {
     });
   }
 
+  static function satisfy(callable $f) {
+    return new Parser(function (Location $l) use ($f) {
+      $input = $l->input();
+      return $f($input) === true ? new Good($input, strlen($input))
+                                 : new Bad($l->toError("Did not satisfy predicate with input '$input'"));
+    });
+  }
+
   static function regex($pattern) {
     return new Parser(function (Location $l) use ($pattern) {
       $input = $l->input();

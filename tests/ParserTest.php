@@ -46,5 +46,13 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       );
     }
 
+    public function testTextParsing() {
+      $this->assertEquals(
+        Parser::satisfy(function ($s) { return $s === 'ab'; })->run('ab'),
+        new Good('ab', 2),
+        'Parser::satisfy(f) when successful must produce the input.'
+      );
+    }
+
 }
 

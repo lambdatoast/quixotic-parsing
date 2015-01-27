@@ -20,4 +20,10 @@ interface TextParsing {
    */
   static function regex($pattern);
 
+  /**
+   * @param callable $f
+   * @return Parsing
+   */
+  static function satisfy(callable $f);
+
 }
