@@ -34,8 +34,9 @@ class Parser implements Parsing {
   static function regex($pattern) {
     return new Parser(function (Location $l) use ($pattern) {
       $input = $l->input();
-      return preg_match($pattern, $input) === 1 ? new Good($input, strlen($input))
-                                                : new Bad((new Location($input, $l->offset()))->toError("Expected pattern '$pattern' to be matched by input '$input'"));
+      $matches = array();
+      return preg_match($pattern, $input, $matches) === 1 ? new Good($matches, strlen($input))
+                                                          : new Bad((new Location($input, $l->offset()))->toError("Expected pattern '$pattern' to be matched by input '$input'"));
     });
   }
 
