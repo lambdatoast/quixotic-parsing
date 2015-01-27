@@ -38,6 +38,12 @@ interface Parsing extends Alternative, Chain, Functor {
   static function slice(Parsing $p);
 
   /**
+   * @param Parsing $p
+   * @return Parsing Parsing whose success Result is an array whose length equals the number of matches.
+   */
+  static function many(Parsing $p);
+
+  /**
    * @param String $input
    * @return Result
    */

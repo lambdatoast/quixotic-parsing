@@ -79,6 +79,14 @@ class Parser implements Parsing, TextParsing {
     });
   }
 
+  static function many(Parsing $p) {
+    return self::lazy_product(
+      $p,
+      function () use ($p) { return self::many($p); }
+    )->map(function ($xs) { return array_merge(array($xs[0]), $xs[1]); })
+     ->or_(self::succeed(array()));
+  }
+
   // Chain implementation
 
   function chain(callable $f) { 

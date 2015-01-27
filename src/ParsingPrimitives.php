@@ -41,5 +41,13 @@ trait ParsingPrimitives {
     });
   }
 
+  static function lazy_product(Parsing $p1, callable $p2f) {
+    return $p1->chain(function ($a) use ($p2f) {
+      return $p2f()->map(function ($b) use ($a) {
+        return array($a, $b);
+      });
+    });
+  }
+
 
 }

@@ -141,5 +141,19 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       );
     }
 
+    public function testMany() {
+      $this->assertEquals(
+        new Good(array('a', 'a', 'a'), 3),
+        Parser::many(Parser::char('a'))->run('aaa'),
+        'Parser::many() when successful produces an array for every match'
+      );
+
+      $this->assertEquals(
+        new Good(array(), 0),
+        Parser::many(Parser::char('a'))->run('bbb'),
+        'Parser::many() produces empty array when no matches'
+      );
+    }
+
 }
 
