@@ -22,6 +22,20 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         })->run('abcABC'), new Good('ABC', 6),
         'Contextual parsing'
       );
+
+      $this->assertEquals(
+        Parser::times(3, Parser::str('ab'))->run('ababab'),
+        new Good(array('ab', 'ab', 'ab'), 6),
+        'Parser::times(n, p) when successful must produce list of n results.'
+      );
+
+      $count = function ($xs) { return count($xs); };
+
+      $this->assertEquals(
+        Parser::times(3, Parser::str('ab'))->map($count)->run('ababab'),
+        new Good(3, 6),
+        'Parser::times(n, p)->map(count) when successful must produce n.'
+      );
     }
 }
 
