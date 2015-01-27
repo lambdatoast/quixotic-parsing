@@ -20,7 +20,6 @@ class Parser implements Parsing {
     return $y === substr($x, 0, strlen($y));
   }
 
-  // Char -> Parser[Char]
   static function char($c) {
     return Parser::str($c)->map(function ($s) { return substr($s, 0, 1); });
   }
@@ -40,7 +39,6 @@ class Parser implements Parsing {
     });
   }
 
-  // String -> Result[A]
   function run($input) {
     $func = $this->_run;
     return $func(new Location($input));
