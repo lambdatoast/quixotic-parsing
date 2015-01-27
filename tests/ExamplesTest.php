@@ -8,14 +8,14 @@ class ExamplesTest extends \PHPUnit_Framework_TestCase {
     $identifier = Parser::satisfyChar(function ($c) { return ctype_alnum($c); });
     $item = Parser::many1($identifier);
     $items_list = Parser::product(
-      Parser::many(Parser::product($item, $comma)),
+      Parser::many(Parser::skipR($item, $comma)),
       $item
     );
     $open = Parser::char('(');
     $close = Parser::char(')');
-    $array = Parser::product(
+    $array = Parser::skipL(
       $array_keyword,
-      Parser::product(Parser::product($open, $items_list), $close)
+      Parser::skipR(Parser::skipL($open, $items_list), $close)
               ->or_(Parser::product($open, $close))
     );
 
