@@ -1,7 +1,7 @@
 <?php
 
-class ParserTest extends \PHPUnit_Framework_TestCase
-{
+class ParserTest extends \PHPUnit_Framework_TestCase {
+
     public function testStrSuccesses() {
       $this->assertTrue(
         Parser::str('abc')->run('abcdef')->equal(new Good('abc', 3))
@@ -36,6 +36,13 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         new Good(3, 6),
         'Parser::times(n, p)->map(count) when successful must produce n.'
       );
+
+      $this->assertEquals(
+        Parser::regex('/^\d\d\w$/')->run('12a'),
+        new Good('12a', 3),
+        'Parser::regex(pattern)->run(s) when successful must produce s.'
+      );
     }
+
 }
 

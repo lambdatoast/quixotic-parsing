@@ -22,6 +22,12 @@ interface Parsing extends Alternative, Chain, Functor {
   static function str($s);
 
   /**
+   * @param string $regex
+   * @return Parsing
+   */
+  static function regex($pattern);
+
+  /**
    * @param Parsing $p1
    * @param Parsing $p2
    * $param callable $f Takes two results and returns something.
