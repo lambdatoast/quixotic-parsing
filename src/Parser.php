@@ -25,7 +25,7 @@ class Parser implements Parsing, TextParsing {
   }
 
   static function anyChar() {
-    return self::satisfyChar(function ($s) { return substr($s, 0, 1) !== false; });
+    return self::satisfyChar(function ($c) { return $c !== ''; });
   }
 
   static function str($s) {
