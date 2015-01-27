@@ -1,6 +1,6 @@
 <?php
 
-class Parser implements Parsing, TextParsing {
+class Parser implements Combinator, TextParsing {
 
   use DerivedCombinators;
 
@@ -79,7 +79,7 @@ class Parser implements Parsing, TextParsing {
     });
   }
 
-  static function many(Parsing $p) {
+  static function many(Combinator $p) {
     return self::lazy_product(
       $p,
       function () use ($p) { return self::many($p); }
@@ -87,7 +87,7 @@ class Parser implements Parsing, TextParsing {
      ->or_(self::succeed(array()));
   }
 
-  static function many1(Parsing $p) {
+  static function many1(Combinator $p) {
     return self::lazy_product(
       $p, 
       function () use ($p) { return self::many($p); }
@@ -107,7 +107,7 @@ class Parser implements Parsing, TextParsing {
     });
   }
 
-  static function slice(Parsing $p) {
+  static function slice(Combinator $p) {
     return new Parser(function (Location $l) use ($p) {
       return $p->run($l->input())->chain(function ($_, $chars_consumed) use ($l) {
         return new Good(substr($l->input(), $l->offset(), $chars_consumed), $chars_consumed);

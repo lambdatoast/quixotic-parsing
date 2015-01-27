@@ -4,41 +4,41 @@ interface TextParsing {
 
   /**
    * @param string $a Should be a single character.
-   * @return Parsing
+   * @return Combinator
    */
   static function char($c);
 
   /**
-   * @return Parsing
+   * @return Combinator
    */
   static function anyChar();
 
   /**
-   * @return Parsing
+   * @return Combinator
    */
   static function anyDigit();
 
   /**
    * @param string $s
-   * @return Parsing
+   * @return Combinator
    */
   static function str($s);
 
   /**
    * @param string $regex
-   * @return Parsing
+   * @return Combinator
    */
   static function regex($pattern);
 
   /**
    * @param callable $f
-   * @return Parsing
+   * @return Combinator
    */
   static function satisfyChar(callable $f);
 
   /**
    * @param callable $f
-   * @return Parsing
+   * @return Combinator
    */
   static function satisfyStr(callable $f);
 
