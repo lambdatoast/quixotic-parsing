@@ -58,8 +58,8 @@ class Parser implements Parsing {
   function chain(callable $f) { 
     return new Parser(function (Location $l) use ($f) {
       return $this->run($l->input())->chain(function ($a, $chars_consumed) use ($f, $l) {
-        $r = $f($a)->run(substr($l->input(), $l->offset() + $chars_consumed));
-        return $r->chain(function ($b, $chars_consumed_b) use ($chars_consumed) {
+        $next_input = substr($l->input(), $l->offset() + $chars_consumed);
+        return $f($a)->run(is_string($next_input) ? $next_input : '')->chain(function ($b, $chars_consumed_b) use ($chars_consumed) {
           return new Good($b, $chars_consumed + $chars_consumed_b);
         });
       });
