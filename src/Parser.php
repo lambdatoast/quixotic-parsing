@@ -25,7 +25,7 @@ class Parser implements Parsing, TextParsing {
   }
 
   static function anyChar() {
-    return self::satisfy(function ($s) { return substr($s, 0, 1) !== false; });
+    return self::satisfyChar(function ($s) { return substr($s, 0, 1) !== false; });
   }
 
   static function str($s) {
@@ -35,7 +35,15 @@ class Parser implements Parsing, TextParsing {
     });
   }
 
-  static function satisfy(callable $f) {
+  static function satisfyChar(callable $f) {
+    return new Parser(function (Location $l) use ($f) {
+      $input = substr($l->input(), 0, 1);
+      $c = is_string($input) ? $input : '';
+      return self::satisfyStr($f)->run($c);
+    });
+  }
+
+  static function satisfyStr(callable $f) {
     return new Parser(function (Location $l) use ($f) {
       $input = $l->input();
       return $f($input) === true ? new Good($input, strlen($input))

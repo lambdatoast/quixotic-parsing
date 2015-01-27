@@ -29,6 +29,12 @@ interface TextParsing {
    * @param callable $f
    * @return Parsing
    */
-  static function satisfy(callable $f);
+  static function satisfyChar(callable $f);
+
+  /**
+   * @param callable $f
+   * @return Parsing
+   */
+  static function satisfyStr(callable $f);
 
 }

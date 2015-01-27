@@ -48,15 +48,21 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 
     public function testTextParsing() {
       $this->assertEquals(
-        Parser::satisfy(function ($s) { return $s === 'ab'; })->run('ab'),
+        Parser::satisfyStr(function ($s) { return $s === 'ab'; })->run('ab'),
         new Good('ab', 2),
-        'Parser::satisfy(f) when successful must produce the input.'
+        'Parser::satisfyStr(f) when successful must produce the input.'
       );
 
       $this->assertEquals(
         Parser::anyChar()->run('a'),
         new Good('a', 1),
         'Parser::anyChar() when successfully run with a char c must produce c.'
+      );
+
+      $this->assertEquals(
+        new Good('a', 1),
+        Parser::anyChar()->run('abc'),
+        'Parser::anyChar() when successfully run with a char s must produce (s minus first char).'
       );
 
       $this->assertEquals(
