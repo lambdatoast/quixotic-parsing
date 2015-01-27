@@ -70,6 +70,17 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         new Bad((new Location('', 0))->toError("Did not satisfy predicate with input ''")),
         'Parser::anyChar() fails when run on an empty string.'
       );
+
+    }
+
+    public function testChain() {
+      $this->assertEquals(
+        new Good(array('A', 'A'), 3),
+        Parser::anyChar()->chain(function ($c) {
+          return Parser::times(2, Parser::char(strtoupper($c)));
+        })->run('aAA'),
+        'Parser::chain() must pass context and update character consumption status appropriately.'
+      );
     }
 
 }
