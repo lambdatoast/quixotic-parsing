@@ -186,6 +186,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         Parser::skipL(Parser::char('a'), Parser::char('b'))->run('ab'),
         'Parser::skipL(p1,p2) discards result of p1'
       );
+
+      $this->assertEquals(
+        new Good('a', 2),
+        Parser::skipR(Parser::char('a'), Parser::char('b'))->run('ab'),
+        'Parser::skipR(p1,p2) discards result of p2'
+      );
     }
 
 }

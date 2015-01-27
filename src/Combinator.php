@@ -51,11 +51,19 @@ interface Combinator extends Alternative, Chain, Functor {
 
   /**
    * Run the two parsers and ignore the value of the left one.
-   * @param Combinator $p
-   * @param Combinator $p
+   * @param Combinator $p1
+   * @param Combinator $p2
    * @return Combinator
    */
   static function skipL(Combinator $p1, Combinator $p2);
+
+  /**
+   * Run the two parsers and ignore the value of the right one.
+   * @param Combinator $p1
+   * @param Combinator $p2
+   * @return Combinator
+   */
+  static function skipR(Combinator $p1, Combinator $p2);
 
   /**
    * @param String $input
