@@ -1,6 +1,6 @@
 <?php
 
-class Parser implements Parsing {
+class Parser implements Parsing, TextParsing {
 
   use ParsingPrimitives;
 
