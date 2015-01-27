@@ -2,6 +2,23 @@
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
 
+    public function testAlternative() {
+      $ab = Parser::str('ab');
+      $cd = Parser::str('cd');
+
+      $this->assertEquals(
+        new Good('ab', 2),
+        $ab->or_($cd)->run('ab'),
+        'Parser::or_()'
+      );
+
+      $this->assertEquals(
+        new Good('ab', 2),
+        $cd->or_($ab)->run('ab'),
+        'Parser::or_()'
+      );
+    }
+
     public function testStrSuccesses() {
       $this->assertTrue(
         Parser::str('abc')->run('abcdef')->equal(new Good('abc', 3))
