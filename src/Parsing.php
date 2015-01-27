@@ -32,6 +32,12 @@ interface Parsing extends Alternative, Chain, Functor {
   static function times($n, Parsing $p);
 
   /**
+   * @param Parsing $p
+   * @return Parsing Parsing whose success Result is the string consumed by $p.
+   */
+  static function slice(Parsing $p);
+
+  /**
    * @param String $input
    * @return Result
    */

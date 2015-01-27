@@ -92,4 +92,12 @@ class Parser implements Parsing, TextParsing {
     });
   }
 
+  static function slice(Parsing $p) {
+    return new Parser(function (Location $l) use ($p) {
+      return $p->run($l->input())->chain(function ($_, $chars_consumed) use ($l) {
+        return new Good(substr($l->input(), $l->offset(), $chars_consumed), $chars_consumed);
+      });
+    });
+  }
+
 }

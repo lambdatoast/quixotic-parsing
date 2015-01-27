@@ -97,5 +97,18 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       );
     }
 
+    public function testSlice() {
+      $this->assertEquals(
+        new Good('abcd', 4),
+        Parser::slice(
+          Parser::product(
+            Parser::str('ab'),
+            Parser::str('cd')
+          )
+        )->run('abcd'),
+        'Parser::slice() when successful produces the inspected input string.'
+      );
+    }
+
 }
 
