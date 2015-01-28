@@ -50,11 +50,11 @@ trait DerivedCombinators {
   }
 
   static function skipL(Combinator $p1, Combinator $p2) {
-    return self::map2($p1, $p2, function ($_, $b) { return $b; });
+    return self::map2(self::slice($p1), $p2, function ($_, $b) { return $b; });
   }
 
   static function skipR(Combinator $p1, Combinator $p2) {
-    return self::map2($p1, $p2, function ($a, $_) { return $a; });
+    return self::map2($p1, self::slice($p2), function ($a, $_) { return $a; });
   }
 
 }
