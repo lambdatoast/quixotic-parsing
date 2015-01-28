@@ -40,4 +40,8 @@ final class Good extends Result {
     return new Some($this->chars_consumed);
   }
 
+  public function mapError(callable $_) {
+    return $this;
+  }
+
 }

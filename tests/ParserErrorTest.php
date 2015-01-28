@@ -18,5 +18,14 @@ class ParserErrorTest extends \PHPUnit_Framework_TestCase {
 
     }
 
+    public function testLabel() {
+      $custom_error = 'My custom parser error';
+      $this->assertEquals(
+        Parser::label($custom_error, Parser::char('a'))->run('b'),
+        new Bad((new Location('b', 0))->toError($custom_error)),
+        'Parser::label sets the error message for a parser'
+      );
+    }
+
 }
 

@@ -36,4 +36,8 @@ final class Bad extends Result {
     return new None;
   }
 
+  public function mapError(callable $f) {
+    return new Bad($f($this->value));
+  }
+
 }

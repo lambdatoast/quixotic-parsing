@@ -71,6 +71,14 @@ class Parser implements Combinator, TextParsing {
     return $func(new Location($input));
   }
 
+  static function label($message, Combinator $p) {
+    return new Parser(function (Location $l) use ($message, $p) {
+      return $p->run($l->input())->mapError(function ($e) use ($message, $l) {
+        return $l->toError($message);
+      });
+    });
+  }
+
   // Alternative instance
 
   function or_(Alternative $pb) { 

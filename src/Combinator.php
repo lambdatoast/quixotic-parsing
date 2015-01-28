@@ -66,6 +66,13 @@ interface Combinator extends Alternative, Chain, Functor {
   static function skipR(Combinator $p1, Combinator $p2);
 
   /**
+   * @param string $message
+   * @param Combinator $p
+   * @return Combinator
+   */
+  static function label($message, Combinator $p);
+
+  /**
    * @param String $input
    * @return Result
    */
