@@ -37,7 +37,7 @@ class Parser implements Combinator, TextParsing {
   static function str($s) {
     return new Parser(function (Location $l) use ($s) {
       return self::starts_with($l->input(), $s) ? new Good($s, strlen($s))
-                                                : new Bad((new Location($l->input(), $l->offset()))->toError("Expected the string '$s'"));
+                                                : new Bad($l->toError("Expected the string '$s'"));
     });
   }
 
