@@ -19,17 +19,15 @@ final class Bad extends Result {
     return $this;
   }
 
-  protected function isGood() {
-    return false;
-  }
-
-  protected function isBad() {
-    return true;
+  public function fold(callable $bad, callable $_) {
+    return $bad($this->value);
   }
 
   public function equal($x) {
-    return $x->isBad() ? $x->value->equal($this->value)
-                       : false;
+    return $x->fold(
+      function ($v) { return $v->equal($this->value); },
+      function () { return false; }
+    );
   }
 
   public function getCharsConsumed() {

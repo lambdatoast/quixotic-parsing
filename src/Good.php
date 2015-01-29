@@ -22,18 +22,17 @@ final class Good extends Result {
     return new Good($this->value, $n);
   }
 
-  protected function isGood() {
-    return true;
-  }
-
-  protected function isBad() {
-    return false;
+  public function fold(callable $_, callable $good) {
+    return $good($this->value, $this->chars_consumed);
   }
 
   public function equal($x) {
-    return $x->isBad() ? false
-                       : ($x->value === $this->value) && 
-                         ($x->chars_consumed === $this->chars_consumed);
+    return $x->fold(
+      function () { return false; },
+      function ($v, $chars_consumed) { 
+        return ($v === $this->value) && 
+               ($chars_consumed === $this->chars_consumed); }
+    );
   }
 
   public function getCharsConsumed() {

@@ -4,8 +4,12 @@ abstract class Result implements Chain, Equal {
 
   abstract public function lazy_or_(callable $fb);
   abstract public function setCharsConsumed($n);
-  abstract protected function isGood();
-  abstract protected function isBad();
+
+  /** 
+   * Evaluate first given function if bad, otherwise evaluate the second one. 
+   * return mixed
+   **/
+  abstract public function fold(callable $bad, callable $good);
 
   /**
    * @return Maybe Either `Some($chars_consumed)` or `None`.
