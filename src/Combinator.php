@@ -65,7 +65,14 @@ interface Combinator extends Alternative, Chain, Functor {
    */
   static function skipR(Combinator $p1, Combinator $p2);
 
-  static function chainl1(Combinator $p, Combinator $sep);
+  /**
+   * Parse one or more occurrences of $p separated by $op, folding from the left.
+   * $op's success must be a binary function on $p success values.
+   * @param Combinator $p
+   * @param Combinator $op
+   * @return Combinator
+   */
+  static function chainl1(Combinator $p, Combinator $op);
 
   /**
    * @param string $message
