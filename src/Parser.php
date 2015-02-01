@@ -102,6 +102,28 @@ class Parser implements Combinator, TextParsing {
     )->map(function ($xs) { return array_merge(array($xs[0]), $xs[1]); });
   }
 
+  static private function _rest(Combinator $p, Combinator $sep) {
+    return function ($x) use ($p, $sep) {
+      var_dump("Entering rest($x)");
+      return $sep->chain(function (callable $f) use ($x, $p, $sep) {
+        var_dump('Got the function!');
+        return $p->chain(function ($y) use ($x, $f, $p, $sep) {
+          var_dump("Got the $y!");
+          $rest = self::_rest($p, $sep);
+          return $rest($f($x, $y));
+        });
+      })->or_(self::succeed($x));
+    };
+  }
+
+  static function chainl1(Combinator $p, Combinator $sep) {
+    $rest = self::_rest($p, $sep);
+    return $p->chain(function ($x) use ($rest) {
+      var_dump("Got the $x!");
+      return $rest($x);
+    });
+  }
+
   // Chain implementation
 
   function chain(callable $f) { 
