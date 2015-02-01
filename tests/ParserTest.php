@@ -203,8 +203,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 
       $this->assertEquals(
         new Good(15, 9),
-        Parser::chainl1($int, $addop)->run('1+2+3+4+5')
+        Parser::chainl1($int, $addop)->run('1+2+3+4+5'),
+        'Parser::chainl1(p, op) collapses `p`s that are separated by `op`'
       );
+
+      $this->assertEquals(
+        new Good(1, 1),
+        Parser::chainl1($int, $addop)->run('1'),
+        'Parser::chainl1(p, op) is successful when input only has enough for a `p` success'
+      );
+
 
     }
 
