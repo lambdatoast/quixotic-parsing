@@ -84,7 +84,19 @@ class Parser implements Combinator, TextParsing {
 
   function or_(Alternative $pb) { 
     return new Parser(function (Location $l) use ($pb) {
-      return $this->run($l->input())->lazy_or_(function () use ($pb, $l) { return $pb->run($l->input()); });
+      //return $this->run($l->input())->lazy_or_(function () use ($pb, $l) { return $pb->run($l->input()); });
+      $r = $this->run($l->input());
+      return $r->fold(
+        function (ParserError $e, CommitStatus $s) use ($pb, $l, $r) {
+          return $s->fold(
+            function () use ($pb, $l) { return $pb->run($l->input()); },
+            function () use ($r) { return $r; }
+          );
+        },
+        function ($v) use ($r) {
+          return $r;
+        }
+      );
     });
   }
 

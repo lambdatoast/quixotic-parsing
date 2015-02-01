@@ -22,7 +22,7 @@ final class Bad extends Result {
   }
 
   public function fold(callable $bad, callable $_) {
-    return $bad($this->value);
+    return $bad($this->value, $this->commit_status);
   }
 
   public function equal($x) {
