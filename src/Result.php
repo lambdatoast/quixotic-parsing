@@ -22,5 +22,12 @@ abstract class Result implements Chain, Equal {
    */
   abstract public function mapError(callable $f);
 
+  function setCommitStatus(CommitStatus $s) {
+    return $this->fold(
+      function (ParserError $e, CommitStatus $c) { return new Bad($e, $s); },
+      function () { return $this; }
+    );
+  }
+
 }
 

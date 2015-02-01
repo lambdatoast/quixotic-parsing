@@ -36,8 +36,9 @@ class Parser implements Combinator, TextParsing {
 
   static function str($s) {
     return new Parser(function (Location $l) use ($s) {
+      $pos = strpos($l->input(), $s, $l->offset());
       return self::starts_with($l->input(), $s) ? new Good($s, strlen($s))
-                                                : new Bad($l->toError("Expected the string '$s'"));
+                                                : new Bad($l->toError("Expected the string '$s'"), $pos !== false && $pos === 0 ? new Committed : new Uncommitted);
     });
   }
 
@@ -53,7 +54,7 @@ class Parser implements Combinator, TextParsing {
     return new Parser(function (Location $l) use ($f) {
       $input = $l->input();
       return $f($input) === true ? new Good($input, strlen($input))
-                                 : new Bad($l->toError("Did not satisfy predicate with input '$input'"));
+                                 : new Bad($l->toError("Did not satisfy predicate with input '$input'"), new Uncommitted);
     });
   }
 
@@ -62,7 +63,7 @@ class Parser implements Combinator, TextParsing {
       $input = $l->input();
       $matches = array();
       return preg_match($pattern, $input, $matches) === 1 ? new Good($matches, strlen($input))
-                                                          : new Bad((new Location($input, $l->offset()))->toError("Expected pattern '$pattern' to be matched by input '$input'"));
+                                                          : new Bad((new Location($input, $l->offset()))->toError("Expected pattern '$pattern' to be matched by input '$input'"), new Uncommitted);
     });
   }
 

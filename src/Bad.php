@@ -1,10 +1,12 @@
 <?php
 
 final class Bad extends Result {
-  var $value;
+  private $value;
+  private $commit_status;
 
-  function __construct(ParserError $value) {
+  function __construct(ParserError $value, CommitStatus $s) {
     $this->value = $value;
+    $this->commit_status = $s;
   }
 
   function chain(callable $f) {
@@ -25,7 +27,7 @@ final class Bad extends Result {
 
   public function equal($x) {
     return $x->fold(
-      function ($v) { return $v->equal($this->value); },
+      function (ParserError $v, CommitStatus $c) { return $v->equal($this->value) && $c === $this->commit_status; },
       function () { return false; }
     );
   }
@@ -35,7 +37,7 @@ final class Bad extends Result {
   }
 
   public function mapError(callable $f) {
-    return new Bad($f($this->value));
+    return new Bad($f($this->value), $this->commit_status);
   }
 
 }

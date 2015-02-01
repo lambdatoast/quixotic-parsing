@@ -84,7 +84,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       );
 
       $this->assertEquals(
-        new Bad((new Location('', 0))->toError("Did not satisfy predicate with input ''")),
+        new Bad((new Location('', 0))->toError("Did not satisfy predicate with input ''"), new Uncommitted),
         Parser::anyChar()->run(''),
         'Parser::anyChar() fails when run on an empty string.'
       );
@@ -175,7 +175,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       );
 
       $this->assertEquals(
-        new Bad((new Location('baaa', 0))->toError("Expected the string 'a'")),
+        new Bad((new Location('baaa', 0))->toError("Expected the string 'a'"), new Uncommitted),
         Parser::many1(Parser::char('a'))->run('baaa'),
         'Parser::many1() fails when not even one success'
       );
