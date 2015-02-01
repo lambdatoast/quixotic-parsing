@@ -9,13 +9,13 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals(
         new Good('ab', 2),
         $ab->or_($cd)->run('ab'),
-        'Parser::or_()'
+        'Parser::or_($ab, $cd) returns $ab when only $ab is successful'
       );
 
       $this->assertEquals(
         new Good('ab', 2),
         $cd->or_($ab)->run('ab'),
-        'Parser::or_()'
+        'Parser::or_($cd, $ab) returns $ab when only $ab is successful'
       );
     }
 
