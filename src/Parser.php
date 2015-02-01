@@ -36,9 +36,10 @@ class Parser implements Combinator, TextParsing {
 
   static function str($s) {
     return new Parser(function (Location $l) use ($s) {
-      $pos = strpos($l->input(), $s, $l->offset());
-      return self::starts_with($l->input(), $s) ? new Good($s, strlen($s))
-                                                : new Bad($l->toError("Expected the string '$s'"), $pos !== false && $pos === 0 ? new Committed : new Uncommitted);
+      $index_diverted = self::firstNonMatchingIndex($l->input(), $s);
+      return $index_diverted === -1 ? new Good($s, strlen($s))
+                                    : new Bad($l->advanceBy($index_diverted)->toError("Expected the string '$s'"), $index_diverted !== 0 ? new Committed : new Uncommitted);
+                                  
     });
   }
 
@@ -80,16 +81,32 @@ class Parser implements Combinator, TextParsing {
     });
   }
 
+  static function firstNonMatchingIndex($s1, $s2) {
+    $xs = str_split($s1);
+    $ys = str_split($s2);
+    $i = 0;
+    while ($i < count($xs) && $i < count($ys)) {
+      if ($xs[$i] !== $ys[$i]) {
+        return $i;
+      }
+      $i++;
+    }
+    if (count($xs) >= count($ys)) {
+      return -1;
+    } else {
+      return count($xs);
+    }
+  }
+
   // Alternative instance
 
   function or_(Alternative $pb) { 
     return new Parser(function (Location $l) use ($pb) {
-      //return $this->run($l->input())->lazy_or_(function () use ($pb, $l) { return $pb->run($l->input()); });
       $r = $this->run($l->input());
       return $r->fold(
         function (ParserError $e, CommitStatus $s) use ($pb, $l, $r) {
           return $s->fold(
-            function () use ($pb, $l) { return $pb->run($l->input()); },
+            function () use ($pb, $l, $r) { return $pb->run($l->input()); },
             function () use ($r) { return $r; }
           );
         },
@@ -117,11 +134,8 @@ class Parser implements Combinator, TextParsing {
 
   static private function _rest(Combinator $p, Combinator $sep) {
     return function ($x) use ($p, $sep) {
-      var_dump("Entering rest($x)");
       return $sep->chain(function (callable $f) use ($x, $p, $sep) {
-        var_dump('Got the function!');
         return $p->chain(function ($y) use ($x, $f, $p, $sep) {
-          var_dump("Got the $y!");
           $rest = self::_rest($p, $sep);
           return $rest($f($x, $y));
         });
@@ -132,7 +146,6 @@ class Parser implements Combinator, TextParsing {
   static function chainl1(Combinator $p, Combinator $sep) {
     $rest = self::_rest($p, $sep);
     return $p->chain(function ($x) use ($rest) {
-      var_dump("Got the $x!");
       return $rest($x);
     });
   }
@@ -143,7 +156,9 @@ class Parser implements Combinator, TextParsing {
     return new Parser(function (Location $l) use ($f) {
       return $this->run($l->input())->chain(function ($a, $chars_consumed) use ($f, $l) {
         $next_input = substr($l->input(), $l->offset() + $chars_consumed);
-        return $f($a)->run(is_string($next_input) ? $next_input : '')->chain(function ($b, $chars_consumed_b) use ($chars_consumed) {
+        return $f($a)->run(is_string($next_input) ? $next_input : '')
+          ->setCommitStatus($chars_consumed != 0 ? new Committed : new Uncommitted)
+          ->chain(function ($b, $chars_consumed_b) use ($chars_consumed) {
           return new Good($b, $chars_consumed + $chars_consumed_b);
         });
       });

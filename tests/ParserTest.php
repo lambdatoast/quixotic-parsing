@@ -20,8 +20,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testStrSuccesses() {
-      $this->assertTrue(
-        Parser::str('abc')->run('abcdef')->equal(new Good('abc', 3))
+      $this->assertEquals(
+        new Good('abc', 3),
+        Parser::str('abc')->run('abcdef')
       );
 
       $this->assertEquals(
@@ -63,6 +64,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         'Parser::regex(pattern) when successful must produce an array of matches.'
       );
     }
+
 
     public function testTextParsing() {
       $this->assertEquals(
@@ -193,6 +195,17 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         Parser::skipR(Parser::char('a'), Parser::char('b'))->run('ab'),
         'Parser::skipR(p1,p2) discards result of p2'
       );
+    }
+
+    public function testChainl1() {
+      $int = Parser::satisfyChar(function ($c) { return is_numeric($c); })->map(function ($c) { return intval($c); });
+      $addop = Parser::char('+')->map(function ($_) { return function ($x, $y) { return $x + $y; }; });
+
+      $this->assertEquals(
+        new Good(15, 9),
+        Parser::chainl1($int, $addop)->run('1+2+3+4+5')
+      );
+
     }
 
 }
