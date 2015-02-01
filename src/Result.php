@@ -24,7 +24,7 @@ abstract class Result implements Chain, Equal {
 
   function setCommitStatus(CommitStatus $s) {
     return $this->fold(
-      function (ParserError $e, CommitStatus $c) { return new Bad($e, $s); },
+      function (ParserError $e, CommitStatus $c) use ($s) { return new Bad($e, $c->fold(Basics::constant($s), Basics::constant($c))); },
       function () { return $this; }
     );
   }
