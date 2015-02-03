@@ -34,10 +34,8 @@ trait DerivedCombinators {
   }
 
   static function product(Combinator $p1, Combinator $p2) {
-    return $p1->chain(function ($a) use ($p2) {
-      return $p2->map(function ($b) use ($a) {
-        return array($a, $b);
-      });
+    return self::map2($p1, $p2, function ($a, $b) {
+      return array($a, $b);
     });
   }
 
