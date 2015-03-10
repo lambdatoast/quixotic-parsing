@@ -20,6 +20,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       );
     }
 
+    public function testProduct() {
+      $p = Parser::str('012345');
+      $q = Parser::str('678901');
+
+      $this->assertEquals(
+        new Bad((new Location('678i', 9))->toError("Expected the string '678901'"), new Committed),
+        $p->chain(function () use ($q) { return $q; })->run('012345678i')
+      );
+    }
+
     public function testSlice() {
       $this->assertEquals(
         new Good('abcd', 4),

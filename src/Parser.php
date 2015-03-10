@@ -157,6 +157,9 @@ class Parser implements Combinator, TextParsing {
       return $this->run($l->input())->chain(function ($a, $chars_consumed) use ($f, $l) {
         $next_input = substr($l->input(), $l->offset() + $chars_consumed);
         return $f($a)->run(is_string($next_input) ? $next_input : '')
+          ->mapError(function ($e) use ($chars_consumed) {
+            return $e->advanceLatestErrorOffsetBy($chars_consumed);
+          })
           ->setCommitStatus($chars_consumed != 0 ? new Committed : new Uncommitted)
           ->chain(function ($b, $chars_consumed_b) use ($chars_consumed) {
           return new Good($b, $chars_consumed + $chars_consumed_b);
