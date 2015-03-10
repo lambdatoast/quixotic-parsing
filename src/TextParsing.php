@@ -19,6 +19,11 @@ interface TextParsing {
   static function anyDigit();
 
   /**
+   * @return Combinator
+   */
+  static function alphaNum();
+
+  /**
    * @param string $s
    * @return Combinator
    */

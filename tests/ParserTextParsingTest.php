@@ -76,6 +76,18 @@ class ParserTextParsingTest extends \PHPUnit_Framework_TestCase {
       );
     }
 
+    public function testAlphaNum() {
+      $this->assertEquals(
+        new Good('a', 1),
+        Parser::alphaNum()->run('a')
+      );
+
+      $this->assertEquals(
+        new Bad((new Location(';', 0))->toError("Did not satisfy predicate with input ';'"), new Uncommitted),
+        Parser::alphaNum()->run(';')
+      );
+    }
+
     public function testAnyDigit() {
       $this->assertEquals(
         new Good('3', 1),

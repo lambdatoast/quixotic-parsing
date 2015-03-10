@@ -34,6 +34,12 @@ class Parser implements Combinator, TextParsing {
     });
   }
 
+  static function alphaNum() {
+    return self::satisfyChar(function ($c) { 
+      return ctype_alnum($c);
+    });
+  }
+
   static function str($s) {
     return new Parser(function (Location $l) use ($s) {
       $index_diverted = self::firstNonMatchingIndex($l->input(), $s);
